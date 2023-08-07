@@ -85,4 +85,4 @@ jobs:
             kubectl delete ingress my-release-harbor-ingress
             kubectl create ingress my-release-harbor-ingress \
                 --class=nginx \
-                --rule="pr-${{ github.event.pull_request.number }}-harbor.uclusters.app.uffizzi.com/*=my-release-harbor-portal:80,tls"
+                --rule="harbor-test.uclusters.app.uffizzi.com/*=my-release-harbor-portal:80,tls"
