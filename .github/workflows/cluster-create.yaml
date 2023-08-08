@@ -79,7 +79,8 @@ jobs:
           run: |
             export KUBECONFIG="`pwd`/kubeconfig"
             helm repo add harbor https://helm.goharbor.io
-            helm install my-release harbor/harbor --values=values.yaml
+            #helm install my-release harbor/harbor --values=values.yaml
+            helm install my-release harbor/harbor
 
             # kubectl delete ingress my-release-harbor-ingress
             # kubectl create ingress my-release-harbor-ingress \
