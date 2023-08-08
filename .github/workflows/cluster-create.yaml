@@ -83,8 +83,6 @@ jobs:
 
         - name: Run tests
           uses: cypress-io/github-action@v5
-          with:
-            working-directory: ./tests
 
         # Create ingress
         # - name: Create ingress
