@@ -81,6 +81,11 @@ jobs:
             helm repo add harbor https://helm.goharbor.io
             helm install my-release harbor/harbor --values=values.yaml
 
+        - name: Run tests
+          uses: cypress-io/github-action@v5
+          with:
+            working-directory: ./tests
+
         # Create ingress
         # - name: Create ingress
         #   id: ingress
