@@ -1,16 +1,13 @@
 {
-    "name": "harbor",
-    "version": "2.9.0",
-    "description": "Harbor UI with Clarity",
-    "angular-cli": {},
-    "scripts": {
-
-    },
-    "private": true,
-    "dependencies": {
-
-    },
-    "devDependencies": {
-
-    }
-  }
+  "name": "harbor",
+  "version": "2.9.0",
+  "description": "Harbor UI with Clarity",
+  "angular-cli": {},
+  "scripts": {},
+  "private": true,
+  "devDependencies": {
+    "cypress": "^12.17.3"
+  },
+  "author": "Gopal Nambiar",
+  "license": "ISC"
+}
