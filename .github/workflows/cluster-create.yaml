@@ -81,13 +81,13 @@ jobs:
             helm repo add harbor https://helm.goharbor.io
             #helm install my-release harbor/harbor --values=values.yaml
             helm install my-release harbor/harbor
-            sleep 60
+            # sleep 120
 
         # Create ingress
-        - name: Create ingress
-          id: ingress
-          run: |
-            kubectl delete ingress my-release-harbor-ingress
-            kubectl create ingress my-release-harbor-ingress \
-                --class=nginx \
-                --rule="harbor-test.uclusters.app.uffizzi.com/*=my-release-harbor-portal:80,tls"
+        # - name: Create ingress
+        #   id: ingress
+        #   run: |
+        #     kubectl delete ingress my-release-harbor-ingress --kubeconfig="`pwd`/kubeconfig"
+        #     kubectl create ingress my-release-harbor-ingress --kubeconfig="`pwd`/kubeconfig" \
+        #         --class=nginx \
+        #         --rule="harbor-test.uclusters.app.uffizzi.com/*=my-release-harbor-portal:80,tls"
