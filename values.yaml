@@ -189,7 +189,7 @@ persistence:
       # Set it to "-" to disable dynamic provisioning
       storageClass: ""
       subPath: ""
-      accessMode: ReadWriteMany
+      accessMode: ReadWriteOnce
       size: 5Gi
       annotations: {}
     jobservice:
@@ -197,7 +197,7 @@ persistence:
         existingClaim: ""
         storageClass: ""
         subPath: ""
-        accessMode: ReadWriteMany
+        accessMode: ReadWriteOnce
         size: 1Gi
         annotations: {}
     # If external database is used, the following settings for database will
@@ -206,7 +206,7 @@ persistence:
       existingClaim: ""
       storageClass: ""
       subPath: ""
-      accessMode: ReadWriteMany
+      accessMode: ReadWriteOnce
       size: 1Gi
       annotations: {}
     # If external Redis is used, the following settings for Redis will
@@ -215,14 +215,14 @@ persistence:
       existingClaim: ""
       storageClass: ""
       subPath: ""
-      accessMode: ReadWriteMany
+      accessMode: ReadWriteOnce
       size: 1Gi
       annotations: {}
     trivy:
       existingClaim: ""
       storageClass: ""
       subPath: ""
-      accessMode: ReadWriteMany
+      accessMode: ReadWriteOnce
       size: 5Gi
       annotations: {}
   # Define which storage backend is used for registry to store
