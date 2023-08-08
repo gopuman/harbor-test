@@ -1,0 +1,16 @@
+{
+    "name": "harbor",
+    "version": "2.9.0",
+    "description": "Harbor UI with Clarity",
+    "angular-cli": {},
+    "scripts": {
+
+    },
+    "private": true,
+    "dependencies": {
+
+    },
+    "devDependencies": {
+
+    }
+  }
