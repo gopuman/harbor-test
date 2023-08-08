@@ -79,8 +79,9 @@ jobs:
           run: |
             export KUBECONFIG="`pwd`/kubeconfig"
             helm repo add harbor https://helm.goharbor.io
-            helm install my-release harbor/harbor --values=values.yaml
-            # sleep 120
+            helm install my-release harbor/harbor
+            sleep 130
+            helm upgrade my-release harbor/harbor --values=values.yaml
 
         # Create ingress
         # - name: Create ingress
