@@ -84,6 +84,19 @@ jobs:
         - name: Run tests
           uses: cypress-io/github-action@v5
 
+        - name: Update Comment with Harbor URL
+          uses: peter-evans/create-or-update-comment@v2
+          with:
+            comment-id: ${{ steps.notification.outputs.comment-id }}
+            issue-number: ${{ github.event.pull_request.number }}
+            body: |
+                ---
+                Please wait for several minutes for Harbor deployment to complete.
+                Then you should be able to visit the Harbor portal at https://harbor-test.uclusters.app.uffizzi.com
+                For more details, please visit https://github.com/goharbor/harbor
+            
+            edit-mode: append
+
         # Create ingress
         # - name: Create ingress
         #   id: ingress
