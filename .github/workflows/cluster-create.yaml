@@ -36,7 +36,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          context: ./artifacts/portal
+          context: ./artifacts
+          path: ./artifacts/portal
           build-args: |
             harbor_base_image_version=dev
             harbor_base_namespace=goharbor
