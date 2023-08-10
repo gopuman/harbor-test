@@ -24,10 +24,10 @@ jobs:
             repository: goharbor/harbor
         - name: Make version
           run: |
-            make install version
-        - name: Make harbor_core
-          run: |
-            make compile_core
+            make compile version
+        # - name: Make harbor_core
+        #   run: |
+        #     make compile_core
         # - name: Generate UUID image name
         #   id: uuid
         #   run: echo "UUID_VOTE=$(uuidgen)" >> $GITHUB_ENV
