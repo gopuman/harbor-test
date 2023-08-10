@@ -25,37 +25,39 @@ jobs:
             make compile_core
 
   # Job to build-push harbor-portal image
-#   build-portal:
-#     name: Build and Push `harbor-portal` Image
-#     runs-on: ubuntu-latest
-#     if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
-#     outputs:
-#       tags: ${{ steps.meta.outputs.tags }}
-#     steps:
-#       - name: Checkout git repo
-#         uses: actions/checkout@v3
-#       - name: Generate UUID image name
-#         id: uuid
-#         run: echo "UUID_VOTE=$(uuidgen)" >> $GITHUB_ENV
-#       - name: Docker metadata
-#         id: meta
-#         uses: docker/metadata-action@v4
-#         with:
-#         # An anonymous, emphemeral registry built on ttl.sh
-#           images: registry.uffizzi.com/${{ env.UUID_VOTE }}
-#           tags: type=raw,value=24h
-#       - name: Build and Push Image to Uffizzi Ephemeral Registry
-#         uses: docker/build-push-action@v3
-#         with:
-#           push: true
-#           tags: ${{ steps.meta.outputs.tags }}
-#           labels: ${{ steps.meta.outputs.labels }}
-#           file: ./artifacts/Dockerfiles/portal/Dockerfile
-#           context: ./artifacts
-#           build-args: |
-#             harbor_base_image_version=dev
-#             harbor_base_namespace=goharbor
-#             npm_registry=https://registry.npmjs.org
+    build-portal:
+      name: Build and Push `harbor-portal` Image
+      runs-on: ubuntu-latest
+      if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+      outputs:
+        tags: ${{ steps.meta.outputs.tags }}
+      steps:
+        - name: Run ls
+          run: ls -la
+        # - name: Checkout git repo
+        #   uses: actions/checkout@v3
+        # - name: Generate UUID image name
+        #   id: uuid
+        #   run: echo "UUID_VOTE=$(uuidgen)" >> $GITHUB_ENV
+        # - name: Docker metadata
+        #   id: meta
+        #   uses: docker/metadata-action@v4
+        #   with:
+        #   # An anonymous, emphemeral registry built on ttl.sh
+        #     images: registry.uffizzi.com/${{ env.UUID_VOTE }}
+        #     tags: type=raw,value=24h
+        # - name: Build and Push Image to Uffizzi Ephemeral Registry
+        #   uses: docker/build-push-action@v3
+        #   with:
+        #     push: true
+        #     tags: ${{ steps.meta.outputs.tags }}
+        #     labels: ${{ steps.meta.outputs.labels }}
+        #     file: ./artifacts/Dockerfiles/portal/Dockerfile
+        #     context: ./artifacts
+        #     build-args: |
+        #       harbor_base_image_version=dev
+        #       harbor_base_namespace=goharbor
+        #       npm_registry=https://registry.npmjs.org
 
   # build-core:
   #   name: Build and Push `harbor-core` Image
