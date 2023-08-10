@@ -22,9 +22,9 @@ jobs:
           uses: actions/checkout@v3
           with:
             repository: goharbor/harbor
-        - name: Make versions
+        - name: Make versions dir
           run: |
-            make compile version
+            make compile
         # - name: Make harbor_core
         #   run: |
         #     make compile_core
