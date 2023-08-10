@@ -36,7 +36,9 @@ jobs:
             images: registry.uffizzi.com/${{ env.UUID_VOTE }}
             tags: type=raw,value=24h
         - name: Run ls
-          run: ls ./make/photon/prepare/versions
+          run: |
+            ls make/photon/
+            ls make/photon/core/
         - name: Build and Push Image to Uffizzi Ephemeral Registry
           uses: docker/build-push-action@v3
           with:
