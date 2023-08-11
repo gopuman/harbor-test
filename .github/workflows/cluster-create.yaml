@@ -242,93 +242,104 @@ jobs:
               harbor_base_namespace=goharbor
               npm_registry=https://registry.npmjs.org
 
-    # uffizzi-cluster:
-    #     # name: Deploy to Uffizzi uCluster
-    #     # if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
-    #     runs-on: ubuntu-latest
-    #     steps:
-        # - name: Checkout
-        #   uses: actions/checkout@v3
+    uffizzi-cluster:
+        name: Deploy to Uffizzi uCluster
+        needs:
+        - build-harbor-core
+        - build-harbor-portal
+        - build-harbor-log
+        - build-harbor-jobservice
+        - build-harbor-registry
+        - build-harbor-registryctl
+        if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v3
         
-        # # Identify comment to be updated
-        # - name: Find comment for Ephemeral Environment
-        #   uses: peter-evans/find-comment@v2
-        #   id: find-comment
-        #   with:
-        #     issue-number: ${{ github.event.pull_request.number }}
-        #     comment-author: "github-actions[bot]"
-        #     body-includes: pr-${{ github.event.pull_request.number }}
-        #     direction: last
+        # Identify comment to be updated
+        - name: Find comment for Ephemeral Environment
+          uses: peter-evans/find-comment@v2
+          id: find-comment
+          with:
+            issue-number: ${{ github.event.pull_request.number }}
+            comment-author: "github-actions[bot]"
+            body-includes: pr-${{ github.event.pull_request.number }}
+            direction: last
 
-        # # Create/Update comment with action deployment status
-        # - name: Create or Update Comment with Deployment Notification
-        #   uses: peter-evans/create-or-update-comment@v2
-        #   id: notification
-        #   with:
-        #     comment-id: ${{ steps.find-comment.outputs.comment-id }}
-        #     issue-number: ${{ github.event.pull_request.number }}
-        #     body: |
-        #         ## Uffizzi Ephemeral Environment - Virtual Cluster
+        # Create/Update comment with action deployment status
+        - name: Create or Update Comment with Deployment Notification
+          uses: peter-evans/create-or-update-comment@v2
+          id: notification
+          with:
+            comment-id: ${{ steps.find-comment.outputs.comment-id }}
+            issue-number: ${{ github.event.pull_request.number }}
+            body: |
+                ## Uffizzi Ephemeral Environment - Virtual Cluster
 
-        #         :cloud: deploying ...
+                :cloud: deploying ...
 
-        #         :gear: Updating now by workflow run [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
-        #             Download the Uffizzi CLI to interact with the upcoming virtual cluster
-        #         https://docs.uffizzi.com/install
-        #     edit-mode: replace
+                :gear: Updating now by workflow run [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+                    Download the Uffizzi CLI to interact with the upcoming virtual cluster
+                https://docs.uffizzi.com/install
+            edit-mode: replace
     
-        # # Create/Connect to Uffizzi Virtual Cluster
-        # - name: Connect to Virtual Cluster
-        #   uses: UffizziCloud/cluster-action@main
-        #   with:
-        #     cluster-name: pr-${{ github.event.pull_request.number }}
+        # Create/Connect to Uffizzi Virtual Cluster
+        - name: Connect to Virtual Cluster
+          uses: UffizziCloud/cluster-action@main
+          with:
+            cluster-name: pr-${{ github.event.pull_request.number }}
 
-        # # Create/Update comment with action deployment status
-        # - name: Create or Update Comment with Deployment URL
-        #   uses: peter-evans/create-or-update-comment@v2
-        #   with:
-        #     comment-id: ${{ steps.notification.outputs.comment-id }}
-        #     issue-number: ${{ github.event.pull_request.number }}
-        #     body: |
-        #         ## Uffizzi Ephemeral Environment - Virtual Cluster
+        # Create/Update comment with action deployment status
+        - name: Create or Update Comment with Deployment URL
+          uses: peter-evans/create-or-update-comment@v2
+          with:
+            comment-id: ${{ steps.notification.outputs.comment-id }}
+            issue-number: ${{ github.event.pull_request.number }}
+            body: |
+                ## Uffizzi Ephemeral Environment - Virtual Cluster
         
-        #         Your cluster `pr-${{ github.event.pull_request.number }}` was successfully created. Learn more about [Uffizzi virtual clusters](https://docs.uffizzi.com/virtual-clusters)
-        #         To connect to this cluster, follow these steps:
+                Your cluster `pr-${{ github.event.pull_request.number }}` was successfully created. Learn more about [Uffizzi virtual clusters](https://docs.uffizzi.com/virtual-clusters)
+                To connect to this cluster, follow these steps:
         
-        #         1. Download and install the Uffizzi CLI from https://docs.uffizzi.com/install
-        #         2. Login to Uffizzi: `uffizzi login`
-        #         3. Update your kubeconfig: `uffizzi cluster update-kubeconfig pr-${{ github.event.pull_request.number }}`. This command will update your local `~/.kube/config`.
-        #         If you want to provide an alternate location follow the optional step (the next step) instead.
+                1. Download and install the Uffizzi CLI from https://docs.uffizzi.com/install
+                2. Login to Uffizzi: `uffizzi login`
+                3. Update your kubeconfig: `uffizzi cluster update-kubeconfig pr-${{ github.event.pull_request.number }}`. This command will update your local `~/.kube/config`.
+                If you want to provide an alternate location follow the optional step (the next step) instead.
         
-        #             Optional: Update your kubeconfig: `uffizzi cluster update-kubeconfig pr-${{ github.event.pull_request.number }} --kubeconfig=[KUBECONFIG]`, replacing `[KUBECONFIG]` with the path to your kubeconfig file.
-        #         After updating your kubeconfig, you can manage your cluster with `kubectl`, `kustomize`, `helm`, and other tools that use kubeconfig files: `kubectl get namespace --kubeconfig [KUBECONFIG]`
+                    Optional: Update your kubeconfig: `uffizzi cluster update-kubeconfig pr-${{ github.event.pull_request.number }} --kubeconfig=[KUBECONFIG]`, replacing `[KUBECONFIG]` with the path to your kubeconfig file.
+                After updating your kubeconfig, you can manage your cluster with `kubectl`, `kustomize`, `helm`, and other tools that use kubeconfig files: `kubectl get namespace --kubeconfig [KUBECONFIG]`
         
-        #     edit-mode: replace
+            edit-mode: replace
 
+        - name: Checkout
+          uses: actions/checkout@v3
+          with:
+            repository: goharbor/harbor-helm
+        
         # Apply Harbor Helm Chart
-        # - name: Apply Helm Chart
-        #   id: helm
-        #   run: |
-        #     export KUBECONFIG="`pwd`/kubeconfig"
-        #     helm repo add harbor https://helm.goharbor.io
-        #     helm install my-release harbor/harbor --values=values.yaml
+        - name: Apply Helm Chart
+          id: helm
+          run: |
+            export KUBECONFIG="`pwd`/kubeconfig"
+            helm repo add harbor https://helm.goharbor.io
+            helm install my-release harbor/harbor --values=values.yaml
 
         # - name: Run tests
         #   uses: cypress-io/github-action@v5
 
-        # - name: Update Comment with Harbor URL
-        #   uses: peter-evans/create-or-update-comment@v2
-        #   with:
-        #     comment-id: ${{ steps.notification.outputs.comment-id }}
-        #     issue-number: ${{ github.event.pull_request.number }}
-        #     body: |
-        #         ---
-        #         Please wait for several minutes for Harbor deployment to complete.
-        #         Then you should be able to visit the Harbor portal at https://harbor-test.uclusters.app.uffizzi.com
-        #         For more details, please visit https://github.com/goharbor/harbor
+        - name: Update Comment with Harbor URL
+          uses: peter-evans/create-or-update-comment@v2
+          with:
+            comment-id: ${{ steps.notification.outputs.comment-id }}
+            issue-number: ${{ github.event.pull_request.number }}
+            body: |
+                ---
+                Please wait for several minutes for Harbor deployment to complete.
+                Then you should be able to visit the Harbor portal at https://harbor-test.uclusters.app.uffizzi.com
+                For more details, please visit https://github.com/goharbor/harbor
             
-            # edit-mode: append
-
+            edit-mode: append
 
         # Create ingress
         # - name: Create ingress
