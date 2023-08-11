@@ -163,9 +163,9 @@ jobs:
     #           harbor_base_namespace=goharbor
     #           npm_registry=https://registry.npmjs.org
 
-    # Job to build-push harbor-registryctl image
-    build-harbor-registryctl:
-      name: Build and Push `harbor-registryctl` Image
+    # Job to build-push harbor-registry image
+    build-harbor-registry:
+      name: Build and Push `harbor-registry` Image
       runs-on: ubuntu-latest
       if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
       outputs:
@@ -177,7 +177,7 @@ jobs:
             repository: goharbor/harbor
         - name: Make registryctl file
           run: |
-            make compile_registryctl
+            make prepare
         - name: Generate UUID image name
           id: uuid
           run: echo "UUID_VOTE=$(uuidgen)" >> $GITHUB_ENV
@@ -194,7 +194,7 @@ jobs:
             push: true
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
-            file: ./make/photon/registryctl/Dockerfile
+            file: ./make/photon/registry/Dockerfile
             context: .
             build-args: |
               harbor_base_image_version=dev
