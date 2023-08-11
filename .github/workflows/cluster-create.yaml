@@ -216,6 +216,9 @@ jobs:
         - name: Make registryctl file
           run: |
               make build -e BUILDTARGET="_build_registry"
+        - name: Compile registryctl file
+          run: |
+              make compile_registryctl
         - name: Generate UUID image name
           id: uuid
           run: echo "UUID_VOTE=$(uuidgen)" >> $GITHUB_ENV
