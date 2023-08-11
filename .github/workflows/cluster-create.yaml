@@ -175,9 +175,9 @@ jobs:
           uses: actions/checkout@v3
           with:
             repository: goharbor/harbor
-        # - name: Make harbor_jobservice file
-        #   run: |
-        #     make compile
+        - name: Make harbor_jobservice file
+          run: |
+            make compile_registryctl
         - name: Generate UUID image name
           id: uuid
           run: echo "UUID_VOTE=$(uuidgen)" >> $GITHUB_ENV
