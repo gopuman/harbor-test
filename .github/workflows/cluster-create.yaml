@@ -177,7 +177,7 @@ jobs:
             repository: goharbor/harbor
         - name: Make registryctl file
           run: |
-            make prepare
+            make install
         - name: Generate UUID image name
           id: uuid
           run: echo "UUID_VOTE=$(uuidgen)" >> $GITHUB_ENV
