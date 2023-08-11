@@ -311,11 +311,6 @@ jobs:
                 After updating your kubeconfig, you can manage your cluster with `kubectl`, `kustomize`, `helm`, and other tools that use kubeconfig files: `kubectl get namespace --kubeconfig [KUBECONFIG]`
         
             edit-mode: replace
-
-        - name: Checkout
-          uses: actions/checkout@v3
-          with:
-            repository: goharbor/harbor-helm
         
         # Apply Harbor Helm Chart
         - name: Apply Helm Chart
@@ -342,10 +337,10 @@ jobs:
             edit-mode: append
 
         # Create ingress
-        # - name: Create ingress
-        #   id: ingress
-        #   run: |
-        #     kubectl delete ingress my-release-harbor-ingress --kubeconfig="`pwd`/kubeconfig"
-        #     kubectl create ingress my-release-harbor-ingress --kubeconfig="`pwd`/kubeconfig" \
-        #         --class=nginx \
-        #         --rule="harbor-test.uclusters.app.uffizzi.com/*=my-release-harbor-portal:80,tls"
+        - name: Create ingress
+          id: ingress
+          run: |
+            kubectl delete ingress my-release-harbor-ingress --kubeconfig="`pwd`/kubeconfig"
+            kubectl create ingress my-release-harbor-ingress --kubeconfig="`pwd`/kubeconfig" \
+                --class=nginx \
+                --rule="harbor-test.uclusters.app.uffizzi.com/*=my-release-harbor-portal:80,tls"
