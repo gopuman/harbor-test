@@ -58,7 +58,7 @@ jobs:
       runs-on: ubuntu-latest
       if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
       outputs:
-        tags: ${{ steps.meta.outputs.images }}
+        tags: ${{ steps.meta.outputs.tags }}
       steps:
         - name: Checkout git repo
           uses: actions/checkout@v3
@@ -315,7 +315,8 @@ jobs:
         - name: Apply Helm Chart
           id: helm
           run: |
-            yq -e '.portal.image.repository = ${{ needs.build-harbor-portal.outputs.tags }}' values.yaml -i
+            REPO=$(echo ${{ needs.build-harbor-portal.outputs.tags }} | cut -f1 -d":")
+            yq -e '.portal.image.repository = ${REPO}' values.yaml -i
             yq -e '.portal.image.tag = 24h' values.yaml -i
             export KUBECONFIG="`pwd`/kubeconfig"
             helm repo add harbor https://helm.goharbor.io
