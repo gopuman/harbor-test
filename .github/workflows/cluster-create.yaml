@@ -58,7 +58,7 @@ jobs:
       runs-on: ubuntu-latest
       if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
       outputs:
-        images: ${{ steps.meta.outputs.images }}
+        tags: ${{ steps.meta.outputs.images }}
       steps:
         - name: Checkout git repo
           uses: actions/checkout@v3
@@ -86,6 +86,8 @@ jobs:
               harbor_base_image_version=dev
               harbor_base_namespace=goharbor
               npm_registry=https://registry.npmjs.org
+        - name: Echo image
+          run: echo ${{ steps.meta.outputs.images }}
 
     # Job to build-push harbor-log image
     # build-harbor-log:
@@ -313,7 +315,7 @@ jobs:
         - name: Apply Helm Chart
           id: helm
           run: |
-            yq -e '.portal.image.repository = ${{ needs.build-harbor-portal.outputs.images }}' values.yaml -i
+            yq -e '.portal.image.repository = ${{ needs.build-harbor-portal.outputs.tags }}' values.yaml -i
             yq -e '.portal.image.tag = 24h' values.yaml -i
             export KUBECONFIG="`pwd`/kubeconfig"
             helm repo add harbor https://helm.goharbor.io
