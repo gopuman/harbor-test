@@ -316,7 +316,7 @@ jobs:
           id: helm
           run: |
             export REPO=$(echo ${{ needs.build-harbor-portal.outputs.tags }} | cut -f1 -d":")
-            yq -e '.portal.image.repository = ${REPO}' values.yaml -i
+            yq -e '.portal.image.repository = ${{ REPO }}' values.yaml -i
             yq -e '.portal.image.tag = 24h' values.yaml -i
             export KUBECONFIG="`pwd`/kubeconfig"
             helm repo add harbor https://helm.goharbor.io
