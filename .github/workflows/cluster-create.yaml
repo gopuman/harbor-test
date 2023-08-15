@@ -331,8 +331,6 @@ jobs:
             echo "HARBOR_HOST=$(kubectl get ingress my-release-harbor-ingress --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"            
             
         - name: Update Comment with Harbor URL
-          env:
-            HARBOR_HOST: ${{ steps.ingress.outputs.HARBOR_HOST }}
           uses: peter-evans/create-or-update-comment@v2
           with:
             comment-id: ${{ steps.notification.outputs.comment-id }}
@@ -340,7 +338,7 @@ jobs:
             body: |
                 ---
                 Please wait for several minutes for Harbor deployment to complete.
-                Then you should be able to visit the Harbor portal at "${HARBOR_HOST}"
+                Then you should be able to visit the Harbor portal at ${{ steps.ingress.outputs.HARBOR_HOST }}
                 For more details, please visit https://github.com/goharbor/harbor
             
             edit-mode: append
