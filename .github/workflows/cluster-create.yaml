@@ -287,7 +287,7 @@ jobs:
         # - build-harbor-jobservice
         # - build-harbor-registry
         # - build-harbor-registryctl
-        - build-trivy-adapter
+        - build-harbor-trivy
         if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
         runs-on: ubuntu-latest
         steps:
