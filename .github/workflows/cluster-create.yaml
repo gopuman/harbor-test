@@ -178,9 +178,9 @@ jobs:
         #     make compile
         - name: builder.sh
           run: |
+            ls
             cd ./make/photon/trivy-adapter
             ./builder.sh v0.30.15
-            ./make/photon/trivy-adapter/builder.sh
             cd -
         - name: Generate UUID image name
           id: uuid
