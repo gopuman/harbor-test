@@ -347,7 +347,7 @@ jobs:
           env:
             HARBOR_HOST: ${{ steps.ingress.outputs.HARBOR_HOST }}
           run: |
-              sed -i "s/harbor_url/http:/\/\${{ steps.ingress.outputs.HARBOR_HOST }}/g" cypress.config.js
+              sed -i "s#harbor_url#https://${{ steps.ingress.outputs.HARBOR_HOST }}#g" cypress.config.js
 
         - name: Run tests
           uses: cypress-io/github-action@v5            
