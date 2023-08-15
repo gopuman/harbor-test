@@ -289,17 +289,17 @@ jobs:
             helm repo add harbor https://helm.goharbor.io
 
             if $(helm ls | grep -q my-release); then
-              helm upgrade my-release 
-              --set portal.image.repository=${REPO_portal} \
-              --set portal.image.tag=24h \
-              --set core.image.repository=${REPO_core} \
-              --set core.image.tag=24h \
-              --set jobservice.image.repository=${REPO_jobservice} \
-              --set jobservice.image.tag=24h \
-              --set registry.registry.image.repository=${REPO_registry} \
-              --set registry.registry.image.tag=24h \
-              --set registry.controller.image.repository=${REPO_registryctl} \
-              --set registry.controller.image.tag=24h \              
+              helm upgrade my-release \
+                --set portal.image.repository=${REPO_portal} \
+                --set portal.image.tag=24h \
+                --set core.image.repository=${REPO_core} \
+                --set core.image.tag=24h \
+                --set jobservice.image.repository=${REPO_jobservice} \
+                --set jobservice.image.tag=24h \
+                --set registry.registry.image.repository=${REPO_registry} \
+                --set registry.registry.image.tag=24h \
+                --set registry.controller.image.repository=${REPO_registryctl} \
+                --set registry.controller.image.tag=24h \              
               harbor/harbor --values=values.yaml
             else
               helm install my-release \
