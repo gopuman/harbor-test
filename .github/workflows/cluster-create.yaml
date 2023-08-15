@@ -328,7 +328,7 @@ jobs:
 
             sleep 10
 
-            echo "HARBOR_HOST=$(kubectl get my-release-harbor-ingress vote --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"            
+            echo "HARBOR_HOST=$(kubectl get ingress my-release-harbor-ingress --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"            
             
         - name: Update Comment with Harbor URL
           env:
