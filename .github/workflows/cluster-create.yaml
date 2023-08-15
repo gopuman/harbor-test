@@ -326,6 +326,8 @@ jobs:
                 --class=nginx \
                 --rule="harbor.example.com/*=my-release-harbor-portal:80,tls"
 
+            sleep 10
+
             echo "HARBOR_HOST=$(kubectl get my-release-harbor-ingress vote --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"            
             
         - name: Update Comment with Harbor URL
@@ -342,6 +344,12 @@ jobs:
                 For more details, please visit https://github.com/goharbor/harbor
             
             edit-mode: append
+
+        - name: Update Harbor URL for Cypress
+          env:
+            HARBOR_HOST: ${{ steps.ingress.outputs.HARBOR_HOST }}
+          run: |
+              sed -i "s/harbor_url/$HARBOR_HOST/g" cypress.config.js
 
         - name: Run tests
           uses: cypress-io/github-action@v5            
