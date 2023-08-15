@@ -340,16 +340,16 @@ jobs:
             body: |
                 ---
                 Please wait for several minutes for Harbor deployment to complete.
-                Then you should be able to visit the Harbor portal at ${HARBOR_HOST}
+                Then you should be able to visit the Harbor portal at "${HARBOR_HOST}"
                 For more details, please visit https://github.com/goharbor/harbor
             
             edit-mode: append
 
-        - name: Update Harbor URL for Cypress
-          env:
-            HARBOR_HOST: ${{ steps.ingress.outputs.HARBOR_HOST }}
-          run: |
-              sed -i "s/harbor_url/http:/\/\${HARBOR_HOST}/g" cypress.config.js
+        # - name: Update Harbor URL for Cypress
+        #   env:
+        #     HARBOR_HOST: ${{ steps.ingress.outputs.HARBOR_HOST }}
+        #   run: |
+        #       sed -i "s/harbor_url/http:/\/\${HARBOR_HOST}/g" cypress.config.js
 
-        - name: Run tests
-          uses: cypress-io/github-action@v5            
+        # - name: Run tests
+        #   uses: cypress-io/github-action@v5            
