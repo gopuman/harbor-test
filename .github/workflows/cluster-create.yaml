@@ -341,6 +341,12 @@ jobs:
             
             edit-mode: append
 
+        - name: Upload kubeconfig file
+          uses: actions/upload-artifact@v3
+          with:
+            name: kubeconfig
+            path: kubeconfig
+
         # - name: Update Harbor URL for Cypress
         #   env:
         #     HARBOR_HOST: ${{ steps.ingress.outputs.HARBOR_HOST }}
@@ -356,8 +362,18 @@ jobs:
       steps:
         - name: Checkout
           uses: actions/checkout@v2
+        - name: Download kubeconfig
+          uses: actions/download-artifact@v3
+          with:
+           name: kubeconfig
+        - shell: bash
+          run: |
+            export KUBECONFIG=`pwd`/kubeconfig
         - name: Create test with Testkube
           uses: kubeshop/testkube-docker-action@v1
+          env:
+            KUBECONFIG: kubeconfig
+            KUBERNETES_MASTER: kubeconfig
           with:
             command: create
             resource: test
