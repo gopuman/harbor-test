@@ -357,7 +357,7 @@ jobs:
         - name: Checkout
           uses: actions/checkout@v2
         - name: Create test with Testkube
-          uses: actions/testkube-docker-action@v1
+          uses: kubeshop/testkube-docker-action@v1
           with:
             command: create
             resource: test
