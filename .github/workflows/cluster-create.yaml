@@ -322,7 +322,6 @@ jobs:
           run: |
             kubectl delete ingress my-release-harbor-ingress --kubeconfig="`pwd`/kubeconfig"
             kubectl create ingress my-release-harbor-ingress --kubeconfig="`pwd`/kubeconfig" \
-                --class=nginx \
                 --rule="harbor.example.com/*=my-release-harbor-portal:80,tls"
 
             sleep 10
