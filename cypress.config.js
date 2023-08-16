@@ -1,5 +1,5 @@
 module.exports = {
   e2e: {
-    baseUrl: 'harbor_url',   
+    baseUrl: 'CYPRESS_CUSTOM_ENV',   
   },
 };
