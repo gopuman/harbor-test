@@ -362,6 +362,10 @@ jobs:
       steps:
         - name: Checkout
           uses: actions/checkout@v2
+        - name: Download kubeconfig
+          uses: actions/download-artifact@v3
+          with:
+           name: kubeconfig
         - name: Install Testkube helm chart
           run: |
             export KUBECONFIG="`pwd`/kubeconfig"  
@@ -377,11 +381,6 @@ jobs:
 
             kubectl create ingress my-testkube-api-server --kubeconfig="`pwd`/kubeconfig \
                 --rule="testkube-api-server.uclusters.app.uffizzi.com/*=testkube-api-server:8088,tls"
-
-        - name: Download kubeconfig
-          uses: actions/download-artifact@v3
-          with:
-           name: kubeconfig
         - shell: bash
           run: |
             export KUBECONFIG=`pwd`/kubeconfig
