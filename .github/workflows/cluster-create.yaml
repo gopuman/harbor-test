@@ -362,6 +362,22 @@ jobs:
       steps:
         - name: Checkout
           uses: actions/checkout@v2
+        - name: Install Testkube helm chart
+          run: |
+            export KUBECONFIG="`pwd`/kubeconfig"  
+
+            helm repo add kubeshop https://kubeshop.github.io/helm-charts
+            helm install my-testkube kubeshop/testkube
+
+            sleep 10
+        - name: Create Ingress for Testkube
+          run: |
+            kubectl create ingress my-testkube-ingress --kubeconfig="`pwd`/kubeconfig" \
+                --rule="testkube.uclusters.app.uffizzi.com/*=testkube-dashboard:8080,tls"
+
+            kubectl create ingress my-testkube-api-server --kubeconfig="`pwd`/kubeconfig \
+                --rule="testkube-api-server.uclusters.app.uffizzi.com/*=testkube-api-server:8088,tls"
+
         - name: Download kubeconfig
           uses: actions/download-artifact@v3
           with:
