@@ -380,6 +380,7 @@ jobs:
 
             sleep 10
         - name: Create Ingress for Testkube
+          id: test
           run: |
             if $(kubectl get ingress my-testkube-ingress --kubeconfig="`pwd`/kubeconfig" | grep -q "my-testkube-ingress"); then
               kubectl delete ingress my-testkube-ingress --kubeconfig="`pwd`/kubeconfig"
@@ -393,6 +394,8 @@ jobs:
             kubectl create ingress my-testkube-api-server --kubeconfig="`pwd`/kubeconfig" \
                 --rule="testkube-api-server.uclusters.app.uffizzi.com/*=testkube-api-server:8088,tls"
 
+            echo "API_SERVER=$(kubectl get ingress my-testkube-api-server --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"            
+
             sleep 20
         - shell: bash
           run: |
@@ -402,10 +405,11 @@ jobs:
           env:
             KUBECONFIG: kubeconfig
             KUBERNETES_MASTER: kubeconfig
+            API_SERVER: ${{ steps.test.outputs.API_SERVER }}
           with:
             command: create
             resource: test
-            parameters: "--name cypress-test --type cypress/project --test-content-type git-dir --git-uri https://github.com/UffizziCloud/harbor-test/ --git-branch testkube --git-path ./ --variable CYPRESS_CUSTOM_ENV=https://${{ steps.ingress.outputs.HARBOR_HOST }}"
+            parameters: "--name cypress-test --api-uri ${{ steps.test.outputs.API_SERVER }} --type cypress/project --test-content-type git-dir --git-uri https://github.com/UffizziCloud/harbor-test/ --git-branch testkube --git-path ./ --variable CYPRESS_CUSTOM_ENV=https://${{ steps.ingress.outputs.HARBOR_HOST }}"
         # - name: Run test with Testkube
         #   uses: kubeshop/testkube-docker-action@v1
         #   with:
