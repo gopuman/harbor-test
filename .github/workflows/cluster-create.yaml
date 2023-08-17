@@ -391,7 +391,7 @@ jobs:
               kubectl delete ingress my-testkube-api-server --kubeconfig="`pwd`/kubeconfig"
             fi
             kubectl create ingress my-testkube-api-server --kubeconfig="`pwd`/kubeconfig" \
-                --rule="testkube.uclusters.app.uffizzi.com/*=testkube-api-server:8088,tls"
+                --rule="testkube-api-server.uclusters.app.uffizzi.com/*=testkube-api-server:8088,tls"
 
             sleep 20
         - shell: bash
