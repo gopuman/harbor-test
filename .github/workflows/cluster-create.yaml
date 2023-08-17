@@ -411,7 +411,7 @@ jobs:
             command: create
             resource: test
             api-uri: https://${{ steps.test.outputs.API_SERVER }}/v1
-            parameters: "--name cypress-test --type cypress/project --test-content-type git-dir --git-uri https://github.com/UffizziCloud/harbor-test/ --git-branch testkube --git-path ./"
+            parameters: "--name cypress-test --type cypress/project --test-content-type git-dir --git-uri https://github.com/UffizziCloud/harbor-test/ --git-branch testkube "
         # - name: Run test with Testkube
         #   uses: kubeshop/testkube-docker-action@v1
         #   with:
