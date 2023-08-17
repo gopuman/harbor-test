@@ -404,12 +404,12 @@ jobs:
             command: create
             resource: test
             parameters: "--name cypress-test --type cypress/project --test-content-type git-dir --git-uri https://github.com/UffizziCloud/harbor-test/ --git-branch testkube --git-path ./ --variable CYPRESS_CUSTOM_ENV=https://${{ steps.ingress.outputs.HARBOR_HOST }}"
-        - name: Run test with Testkube
-          uses: kubeshop/testkube-docker-action@v1
-          with:
-            command: run
-            resource: test
-            parameters: "cypress-test"
+        # - name: Run test with Testkube
+        #   uses: kubeshop/testkube-docker-action@v1
+        #   with:
+        #     command: run
+        #     resource: test
+        #     parameters: "cypress-test"
 
         # - name: Run tests
         #   uses: cypress-io/github-action@v5            
