@@ -208,6 +208,8 @@ jobs:
 
     uffizzi-cluster:
         name: Deploy to Uffizzi uCluster
+        outputs:
+          HARBOR_HOST: ${{ steps.ingress.outputs.HARBOR_HOST }}
         # needs:
         # - build-harbor-core
         # - build-harbor-portal
@@ -411,7 +413,7 @@ jobs:
             command: create
             resource: test
             api-uri: https://${{ steps.test.outputs.API_SERVER }}
-            parameters: "--name cypress-test --type cypress/project --test-content-type git-dir --git-uri https://github.com/UffizziCloud/harbor-test/ --git-branch testkube "
+            parameters: "--name cypress-test --type cypress/project --test-content-type git-dir --git-uri https://github.com/UffizziCloud/harbor-test/ --git-branch testkube --git-path ./ --variable CYPRESS_CUSTOM_ENV=${{ needs.uffizzi-cluster.outputs.HARBOR_HOST }}"
         # - name: Run test with Testkube
         #   uses: kubeshop/testkube-docker-action@v1
         #   with:
