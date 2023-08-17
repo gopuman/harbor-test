@@ -396,7 +396,9 @@ jobs:
 
             sleep 20
 
-            echo "API_SERVER=$(kubectl get ingress my-testkube-api-server --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"            
+            echo "API_SERVER=$(kubectl get ingress my-testkube-api-server --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"    
+            
+            "`echo $API_SERVER`"        
         - shell: bash
           run: |
             export KUBECONFIG=`pwd`/kubeconfig
