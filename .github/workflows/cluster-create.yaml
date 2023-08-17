@@ -394,9 +394,9 @@ jobs:
             kubectl create ingress my-testkube-api-server --kubeconfig="`pwd`/kubeconfig" \
                 --rule="testkube-api-server.uclusters.app.uffizzi.com/*=testkube-api-server:8088,tls"
 
-            echo "API_SERVER=$(kubectl get ingress my-testkube-api-server --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"            
-
             sleep 20
+
+            echo "API_SERVER=$(kubectl get ingress my-testkube-api-server --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"            
         - shell: bash
           run: |
             export KUBECONFIG=`pwd`/kubeconfig
