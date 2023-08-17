@@ -328,7 +328,9 @@ jobs:
 
             sleep 10
 
-            echo "HARBOR_HOST=$(kubectl get ingress my-release-harbor-ingress --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"            
+            echo "HARBOR_HOST=$(kubectl get ingress my-release-harbor-ingress --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"
+            
+            
             
         - name: Update Comment with Harbor URL
           uses: peter-evans/create-or-update-comment@v2
@@ -414,12 +416,13 @@ jobs:
             resource: test
             api-uri: https://${{ steps.test.outputs.API_SERVER }}
             parameters: "--name cypress-test --type cypress/project --test-content-type git-dir --git-uri https://github.com/UffizziCloud/harbor-test/ --git-branch testkube --git-path cypress/ --variable CYPRESS_BASE_URL=https://${{ needs.uffizzi-cluster.outputs.HARBOR_HOST }}"
-        # - name: Run test with Testkube
-        #   uses: kubeshop/testkube-docker-action@v1
-        #   with:
-        #     command: run
-        #     resource: test
-        #     parameters: "cypress-test"
+        - name: Run test with Testkube
+          uses: kubeshop/testkube-docker-action@v1
+          with:
+            command: run
+            resource: test
+            api-uri: https://${{ steps.test.outputs.API_SERVER }}
+            parameters: "cypress-test"
 
         # - name: Run tests
         #   uses: cypress-io/github-action@v5            
