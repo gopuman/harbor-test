@@ -28,7 +28,7 @@ expose:
       secretName: ""
   ingress:
     hosts:
-      core: harbor-test.uclusters.app.uffizzi.com 
+      core: harbor.app.uffizzi.com
     # set to the type of ingress controller if it has specific requirements.
     # leave as `default` for most ingress controllers.
     # set to `gce` if using the GCE ingress controller
@@ -100,7 +100,7 @@ expose:
 # the IP address of k8s node
 #
 # If Harbor is deployed behind the proxy, set it as the URL of proxy
-externalURL: https://my-release-harbor-ingress-default-pr-2-cluster-322.uclusters.app.uffizzi.com
+externalURL: https://harbor.app.uffizzi.com
 
 # The internal TLS used for harbor components secure communicating. In order to enable https
 # in each component tls cert files need to provided in advance.
