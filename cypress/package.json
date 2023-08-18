@@ -6,7 +6,7 @@
   "scripts": {},
   "private": true,
   "devDependencies": {
-    "cypress": "^12.17.3"
+    "cypress": "^8.3.0"
   },
   "author": "Gopal Nambiar",
   "license": "ISC"
