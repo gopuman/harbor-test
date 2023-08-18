@@ -301,8 +301,8 @@ jobs:
                 --set registry.registry.image.repository=${REPO_registry} \
                 --set registry.registry.image.tag=24h \
                 --set registry.controller.image.repository=${REPO_registryctl} \
-                --set registry.controller.image.tag=24h \              
-                --values=values.yaml
+                --set registry.controller.image.tag=24h \
+                harbor/harbor --force --values=values.yaml
             else
               helm install my-release \
                 --set portal.image.repository=${REPO_portal} \
