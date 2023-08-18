@@ -322,12 +322,6 @@ jobs:
         - name: Create ingress
           id: ingress
           run: |
-            # kubectl delete ingress my-release-harbor-ingress --kubeconfig="`pwd`/kubeconfig"
-            # kubectl create ingress my-release-harbor-ingress --kubeconfig="`pwd`/kubeconfig" \
-            #     --rule="harbor.example.com/*=my-release-harbor-portal:80,tls"
-
-            sleep 10
-
             echo "HARBOR_HOST=$(kubectl get ingress my-release-harbor-ingress --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"
             
             
