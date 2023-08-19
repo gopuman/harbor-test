@@ -291,7 +291,7 @@ jobs:
             helm repo add harbor https://helm.goharbor.io
 
             if $(helm ls | grep -q my-release); then
-              helm upgrade my-release \
+              helm upgrade --install my-release \
                 --set portal.image.repository=${REPO_portal} \
                 --set portal.image.tag=24h \
                 --set core.image.repository=${REPO_core} \
@@ -302,7 +302,7 @@ jobs:
                 --set registry.registry.image.tag=24h \
                 --set registry.controller.image.repository=${REPO_registryctl} \
                 --set registry.controller.image.tag=24h \
-                harbor/harbor --force --values=values.yaml
+                harbor/harbor --values=values.yaml
             else
               helm install my-release \
                 --set portal.image.repository=${REPO_portal} \
@@ -368,7 +368,7 @@ jobs:
 
             helm repo add kubeshop https://kubeshop.github.io/helm-charts
 
-            if $(helm ls | grep -q my-release); then
+            if $(helm ls | grep -q my-testkube); then
               helm upgrade --install my-testkube kubeshop/testkube
             else
               helm install my-testkube kubeshop/testkube
