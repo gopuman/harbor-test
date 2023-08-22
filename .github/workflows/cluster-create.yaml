@@ -439,7 +439,7 @@ jobs:
               uses: cypress-io/github-action@v5
               with:
                 working-directory: cypress
-                config-file: cypress.config.json
+                config-file: cypress/cypress.config.json
                 # config: baseUrl=https://${{ needs.uffizzi-cluster.outputs.HARBOR_HOST }}
                 config: baseUrl=https://my-release-harbor-ingress-default-pr-2-cluster-417.uclusters.app.uffizzi.com
         # - name: Run tests
