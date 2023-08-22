@@ -435,9 +435,9 @@ jobs:
                 pwd
                 ls ../
 
-            # - name: Cypress run
-            #   uses: cypress-io/github-action@v5
-            #   with:
-            #     working-directory: ../
+            - name: Cypress run
+              uses: cypress-io/github-action@v5
+              with:
+                working-directory: cypress
         # - name: Run tests
         #   uses: cypress-io/github-action@v5            
