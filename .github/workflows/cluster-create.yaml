@@ -431,7 +431,7 @@ jobs:
 
             - name: Test
               run: |
-                ls /home/runner/work/harbor-test/harbor-test/cypress
+                ls /home/runner/work/harbor-test/harbor-test/cypress/cypress
                 pwd
                 ls ../
 
