@@ -398,6 +398,16 @@ jobs:
         - shell: bash
           run: |
             export KUBECONFIG=`pwd`/kubeconfig
+        - name: Set API-SERVER
+          uses: kubeshop/testkube-docker-action@v1
+          env:
+            KUBECONFIG: kubeconfig
+            KUBERNETES_MASTER: kubeconfig
+            API_SERVER: ${{ steps.test.outputs.API_SERVER }}
+          with:
+            command: config
+            resource: api-server-name
+            parameters: my-testkube-api-server --api-uri https://${{ steps.test.outputs.API_SERVER }}
         - name: Create test with Testkube
           uses: kubeshop/testkube-docker-action@v1
           env:
