@@ -431,7 +431,7 @@ jobs:
 
             - name: Test
               run: |
-                ls
+                ls cypress
                 pwd
                 ls ../
 
