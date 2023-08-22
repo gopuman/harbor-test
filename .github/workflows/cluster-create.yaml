@@ -432,6 +432,6 @@ jobs:
             - name: Cypress run
               uses: cypress-io/github-action@v5
               with:
-                config-file: cypress/cypress-config.json
+                working-directory: .
         # - name: Run tests
         #   uses: cypress-io/github-action@v5            
