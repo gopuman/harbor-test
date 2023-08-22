@@ -430,9 +430,7 @@ jobs:
             #     path: 'cypress/'
 
             - name: Test
-              shell: bash
-              run: |
-                ls
+              run: ls
       
             - name: Cypress run
               uses: cypress-io/github-action@v5
