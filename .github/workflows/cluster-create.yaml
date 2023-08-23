@@ -516,7 +516,15 @@ jobs:
                     issue_number: context.issue.number,
                     owner: context.repo.owner,
                     repo: context.repo.repo,
-                    body: `Here are the test results:\\n\\n${tableRows}`,
+                    body:`
+                    Here are the test results:
+                    
+                    \`\`\`
+                    | Result         | Passed ✅ | Failed ❌ | Pending ✋ | Skipped ↩️ | Duration 🕗       |
+                    | -------------- | --------- | --------- | --------- | ---------- | ------------------ |
+                    | ${status}      | ${testResults.totalPassed}        | ${testResults.totalFailed}        | ${testResults.totalPending}        | ${testResults.totalSkipped}        | ${testResults.totalDuration / 1000}s |
+                    \`\`\`
+                    `,,
                   })
 
     uffizzi-cluster-delete:
