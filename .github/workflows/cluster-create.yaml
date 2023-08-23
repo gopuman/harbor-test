@@ -423,61 +423,53 @@ jobs:
             api-uri: https://${{ steps.test.outputs.API_SERVER }}
             parameters: "cypress-test"
 
-          # Use the output from the `Get test` step
-        - name: Get the output result
-          run: |
-            result="${{ steps.get_test.outputs.result }}"
-            result="${result//'%'/'%25'}"
-            result="${result//$'\n'/'%0A'}"
-            result="${result//$'\r'/'%0D'}"
-            echo '$result'
-            
-    #     - name: Create test with Testkube
-    #       uses: kubeshop/testkube-docker-action@v1
-    #       env:
-    #         KUBECONFIG: kubeconfig
-    #         KUBERNETES_MASTER: kubeconfig
-    #         API_SERVER: ${{ steps.test.outputs.API_SERVER }}
-    #       with:
-    #         command: create
-    #         resource: test
-    #         api-uri: https://${{ steps.test.outputs.API_SERVER }}
-    #         parameters: "--name cypress-test --type cypress/project --test-content-type git-dir --git-uri https://github.com/UffizziCloud/harbor-test/ --git-branch testkube --git-path cypress/ --variable CYPRESS_BASE_URL=https://${{ needs.uffizzi-cluster.outputs.HARBOR_HOST }}"
+        - name: Create test with Testkube
+          if: ${{ steps.get_test.outputs.status == 'failure' }}
+          uses: kubeshop/testkube-docker-action@v1
+          env:
+            KUBECONFIG: kubeconfig
+            KUBERNETES_MASTER: kubeconfig
+            API_SERVER: ${{ steps.test.outputs.API_SERVER }}
+          with:
+            command: create
+            resource: test
+            api-uri: https://${{ steps.test.outputs.API_SERVER }}
+            parameters: "--name cypress-test --type cypress/project --test-content-type git-dir --git-uri https://github.com/UffizziCloud/harbor-test/ --git-branch testkube --git-path cypress/ --variable CYPRESS_BASE_URL=https://${{ needs.uffizzi-cluster.outputs.HARBOR_HOST }}"
 
-    #     - name: Run test with Testkube
-    #       uses: kubeshop/testkube-docker-action@v1
-    #       with:
-    #         command: run
-    #         resource: test
-    #         api-uri: https://${{ steps.test.outputs.API_SERVER }}
-    #         parameters: "cypress-test"
+        - name: Run test with Testkube
+          uses: kubeshop/testkube-docker-action@v1
+          with:
+            command: run
+            resource: test
+            api-uri: https://${{ steps.test.outputs.API_SERVER }}
+            parameters: "cypress-test"
 
-    #     - name: Update comment with Testkube
-    #       uses: peter-evans/create-or-update-comment@v2
-    #       with:
-    #         comment-id: ${{ needs.uffizzi-cluster.harbor_notify.outputs.comment-id }}
-    #         issue-number: ${{ github.event.pull_request.number }}
-    #         body: |
-    #             ---
-    #               Check out Testkube at -- https://${{ steps.test.outputs.TK_DASHBOARD }}
+        - name: Update comment with Testkube
+          uses: peter-evans/create-or-update-comment@v2
+          with:
+            comment-id: ${{ needs.uffizzi-cluster.harbor_notify.outputs.comment-id }}
+            issue-number: ${{ github.event.pull_request.number }}
+            body: |
+                ---
+                  Check out Testkube at -- https://${{ steps.test.outputs.TK_DASHBOARD }}
             
-    #         edit-mode: append
+            edit-mode: append
   
-    # cypress-run:
-    #       needs:
-    #         - uffizzi-cluster
-    #       name: Cypress run
-    #       runs-on: ubuntu-22.04
-    #       steps:
-    #         - name: Checkout
-    #           uses: actions/checkout@v3
-    #           with:
-    #             path: 'cypress/'
+    cypress-run:
+          needs:
+            - uffizzi-cluster
+          name: Cypress run
+          runs-on: ubuntu-22.04
+          steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                path: 'cypress/'
 
-    #         - name: Cypress run
-    #           uses: cypress-io/github-action@v5
-    #           with:
-    #             working-directory: cypress/cypress
-    #             config-file: cypress.config.js
-    #             build: npx cypress info
-    #             config: baseUrl=https://${{ needs.uffizzi-cluster.outputs.HARBOR_HOST }}
+            - name: Cypress run
+              uses: cypress-io/github-action@v5
+              with:
+                working-directory: cypress/cypress
+                config-file: cypress.config.js
+                build: npx cypress info
+                config: baseUrl=https://${{ needs.uffizzi-cluster.outputs.HARBOR_HOST }}
