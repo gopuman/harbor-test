@@ -394,6 +394,7 @@ jobs:
             sleep 20
 
             echo "API_SERVER=$(kubectl get ingress my-testkube-api-server --kubeconfig="`pwd`/kubeconfig" -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"
+            echo "TK_DASHBOARD=$(kubectl get ingress my-testkube-ingress  --kubeconfig="`pwd`/kubeconfig" -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"
             
         - shell: bash
           env:
@@ -401,6 +402,7 @@ jobs:
           run: |
             export KUBECONFIG=`pwd`/kubeconfig
             helm upgrade my-testkube kubeshop/testkube --set testkube-dashboard.apiServerEndpoint=${{ steps.test.outputs.API_SERVER }}
+            
         - name: Create test with Testkube
           uses: kubeshop/testkube-docker-action@v1
           env:
@@ -412,6 +414,7 @@ jobs:
             resource: test
             api-uri: https://${{ steps.test.outputs.API_SERVER }}
             parameters: "--name cypress-test --type cypress/project --test-content-type git-dir --git-uri https://github.com/UffizziCloud/harbor-test/ --git-branch testkube --git-path cypress/ --variable CYPRESS_BASE_URL=https://${{ needs.uffizzi-cluster.outputs.HARBOR_HOST }}"
+
         - name: Run test with Testkube
           uses: kubeshop/testkube-docker-action@v1
           with:
@@ -420,7 +423,20 @@ jobs:
             api-uri: https://${{ steps.test.outputs.API_SERVER }}
             parameters: "cypress-test"
 
+        - name: Update comment with Testkube
+          uses: peter-evans/create-or-update-comment@v2
+          with:
+            comment-id: ${{ needs.uffizzi-cluster.notification.outputs.comment-id }}
+            issue-number: ${{ github.event.pull_request.number }}
+            body: |
+                ---
+                  Check out Testkube at -- https://${{ steps.test.outputs.TK_DASHBOARD }}
+            
+            edit-mode: append
+  
     cypress-run:
+          needs:
+            - uffizzi-cluster
           name: Cypress run
           runs-on: ubuntu-22.04
           steps:
