@@ -326,6 +326,7 @@ jobs:
             echo "HARBOR_HOST=$(kubectl get ingress my-release-harbor-ingress --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"
           
         - name: Update Comment with Harbor URL
+          id: harbor_notify
           uses: peter-evans/create-or-update-comment@v2
           with:
             comment-id: ${{ steps.notification.outputs.comment-id }}
@@ -426,7 +427,7 @@ jobs:
         - name: Update comment with Testkube
           uses: peter-evans/create-or-update-comment@v2
           with:
-            comment-id: ${{ needs.uffizzi-cluster.notification.outputs.comment-id }}
+            comment-id: ${{ needs.uffizzi-cluster.harbor_notify.outputs.comment-id }}
             issue-number: ${{ github.event.pull_request.number }}
             body: |
                 ---
@@ -452,4 +453,3 @@ jobs:
                 config-file: cypress.config.js
                 build: npx cypress info
                 config: baseUrl=https://${{ needs.uffizzi-cluster.outputs.HARBOR_HOST }}
-                # config: baseUrl=https://my-release-harbor-ingress-default-pr-2-cluster-417.uclusters.app.uffizzi.com
