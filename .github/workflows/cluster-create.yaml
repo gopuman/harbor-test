@@ -524,7 +524,7 @@ jobs:
                     | -------------- | --------- | --------- | --------- | ---------- | ------------------ |
                     | ${status}      | ${testResults.totalPassed}        | ${testResults.totalFailed}        | ${testResults.totalPending}        | ${testResults.totalSkipped}        | ${testResults.totalDuration / 1000}s |
                     \`\`\`
-                    `,,
+                    `,
                   })
 
     uffizzi-cluster-delete:
