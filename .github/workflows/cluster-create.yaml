@@ -426,6 +426,7 @@ jobs:
             parameters: "cypress-test"
 
         - name: Create test with Testkube
+          id: create_test
           if: always() && (steps.get_test.outcome == 'failure')
           uses: kubeshop/testkube-docker-action@v1
           env:
@@ -440,6 +441,8 @@ jobs:
             # parameters: "--name cypress-test --type cypress/project --test-content-type git-dir --git-uri https://github.com/UffizziCloud/harbor-test/ --git-branch testkube --git-path cypress/ --variable CYPRESS_BASE_URL=https://${{ needs.uffizzi-cluster.outputs.HARBOR_HOST }}"
 
         - name: Run test with Testkube
+          id: run_test
+          if: always() && (steps.create_test.outcome == 'success')
           uses: kubeshop/testkube-docker-action@v1
           with:
             command: run
@@ -448,6 +451,7 @@ jobs:
             parameters: "cypress-test"
 
         - name: Update comment with Testkube
+          if: always() && (steps.run_test.outcome == 'success')
           uses: peter-evans/create-or-update-comment@v2
           with:
             comment-id: ${{ needs.uffizzi-cluster.harbor_notify.outputs.comment-id }}
