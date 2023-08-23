@@ -281,6 +281,7 @@ jobs:
         - name: Deletion 
           id: delete
           run: |
+            sleep 20
             if $(kubectl get networkpolicies --kubeconfig kubeconfig | grep -q "uc-pr-${{ github.event.pull_request.number }}-workloads"); then
               kubectl delete networkpolicies --kubeconfig kubeconfig uc-pr-${{ github.event.pull_request.number }}-workloads
             fi
@@ -333,6 +334,7 @@ jobs:
         - name: Create ingress
           id: ingress
           run: |
+            sleep 20
             echo "HARBOR_HOST=$(kubectl get ingress my-release-harbor-ingress --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')" >> "$GITHUB_OUTPUT"
           
         - name: Update Comment with Harbor URL
@@ -424,7 +426,7 @@ jobs:
             parameters: "cypress-test"
 
         - name: Create test with Testkube
-          if: ${{ steps.get_test.outputs.status == 'failure' }}
+          if: always() && (steps.get_test.outcome == 'failure')
           uses: kubeshop/testkube-docker-action@v1
           env:
             KUBECONFIG: kubeconfig
