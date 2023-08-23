@@ -452,8 +452,8 @@ jobs:
     #         edit-mode: append
   
     cypress-run:
-          # needs:
-          #   - uffizzi-cluster
+          needs:
+            - uffizzi-cluster
           name: Cypress run
           runs-on: ubuntu-22.04
           steps:
