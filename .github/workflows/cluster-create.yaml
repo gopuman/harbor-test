@@ -442,7 +442,7 @@ jobs:
 
         - name: Run test with Testkube
           id: run_test
-          if: always() && (steps.create_test.outcome == 'success')
+          if: always()
           uses: kubeshop/testkube-docker-action@v1
           with:
             command: run
@@ -451,7 +451,7 @@ jobs:
             parameters: "cypress-test"
 
         - name: Update comment with Testkube
-          if: always() && (steps.run_test.outcome == 'success')
+          if: always()
           uses: peter-evans/create-or-update-comment@v2
           with:
             comment-id: ${{ needs.uffizzi-cluster.harbor_notify.outputs.comment-id }}
