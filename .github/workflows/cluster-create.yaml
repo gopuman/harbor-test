@@ -510,13 +510,13 @@ jobs:
                     `${testResults.totalDuration / 1000}s` || ''
                   ]                  
 
+                  const tableRows = [headers.map(h => h.data), summaryRows].map(row => '|' + row.join('|') + '|').join('\\n');
+
                   github.rest.issues.createComment({
                     issue_number: context.issue.number,
                     owner: context.repo.owner,
                     repo: context.repo.repo,
-                    body:   await core.summary
-                    .addHeading('Cypress Results', 2)
-                    .addTable([headers, summaryRows]).write()
+                    body: `Here are the test results:\\n\\n${tableRows}`,
                   })
 
     uffizzi-cluster-delete:
