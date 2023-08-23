@@ -463,7 +463,7 @@ jobs:
 
             - name: Cypress run
               id: cypress
-              uses: cypress-io/github-action@mihaisee:feat/add-test-reults-output
+              uses: mihaisee/github-action@feat/add-test-reults-output
               with:
                 working-directory: cypress/cypress
                 config-file: cypress.config.js
