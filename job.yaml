@@ -1,0 +1,12 @@
+apiVersion: batch/v1
+kind: Job
+spec:
+  template:
+    spec:
+      containers:
+        - name: "{{ .Name }}"
+          image: {{ .Image }}
+          resources:
+            requests:
+              memory: 2Gi
+              cpu: 2

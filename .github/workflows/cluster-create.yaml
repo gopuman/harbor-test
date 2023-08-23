@@ -434,7 +434,8 @@ jobs:
             command: create
             resource: test
             api-uri: https://${{ steps.test.outputs.API_SERVER }}
-            parameters: "--name cypress-test --type cypress/project --test-content-type git-dir --git-uri https://github.com/UffizziCloud/harbor-test/ --git-branch testkube --git-path cypress/ --variable CYPRESS_BASE_URL=https://${{ needs.uffizzi-cluster.outputs.HARBOR_HOST }}"
+            parameters: "--name cypress-test --type cypress/project --test-content-type git-dir --git-uri https://github.com/UffizziCloud/harbor-test/ --git-branch testkube --git-path cypress/ --variable CYPRESS_BASE_URL=https://${{ needs.uffizzi-cluster.outputs.HARBOR_HOST }} --job-template job.yaml"
+            # parameters: "--name cypress-test --type cypress/project --test-content-type git-dir --git-uri https://github.com/UffizziCloud/harbor-test/ --git-branch testkube --git-path cypress/ --variable CYPRESS_BASE_URL=https://${{ needs.uffizzi-cluster.outputs.HARBOR_HOST }}"
 
         - name: Run test with Testkube
           uses: kubeshop/testkube-docker-action@v1
@@ -473,3 +474,14 @@ jobs:
                 config-file: cypress.config.js
                 build: npx cypress info
                 config: baseUrl=https://${{ needs.uffizzi-cluster.outputs.HARBOR_HOST }}
+
+    uffizzi-cluster-delete:
+          if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' }}
+          runs-on: ubuntu-latest
+          steps:
+          - name: Delete Virtual Cluster
+            uses: UffizziCloud/cluster-action@main
+            with:
+              action: delete
+              cluster-name: pr-${{ github.event.pull_request.number }}
+              server: https://app.uffizzi.com/
