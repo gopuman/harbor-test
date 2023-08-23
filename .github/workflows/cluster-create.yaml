@@ -281,8 +281,12 @@ jobs:
         - name: Deletion 
           id: delete
           run: |
-            kubectl delete networkpolicies --kubeconfig kubeconfig uc-pr-${{ github.event.pull_request.number }}-workloads
-            kubectl delete resourcequotas --kubeconfig kubeconfig uc-pr-${{ github.event.pull_request.number }}-quota
+            if $(kubectl get networkpolicies --kubeconfig kubeconfig | grep -q "uc-pr-${{ github.event.pull_request.number }}-workloads"); then
+              kubectl delete networkpolicies --kubeconfig kubeconfig uc-pr-${{ github.event.pull_request.number }}-workloads
+            fi
+            if $(kubectl get resourcequotas --kubeconfig kubeconfig | grep -q "uc-pr-${{ github.event.pull_request.number }}-quota"); then
+              kubectl delete resourcequotas --kubeconfig kubeconfig uc-pr-${{ github.event.pull_request.number }}-quota
+            fi
         
         # Apply Harbor Helm Chart
         - name: Apply Helm Chart
