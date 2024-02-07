@@ -240,6 +240,8 @@ jobs:
     steps:
       - name: Checkout git repo
         uses: actions/checkout@v3
+        with:
+          repository: goharbor/harbor
       - name: Build DB
         run: |
           make build -e BUILDTARGET="_build_db"
@@ -279,6 +281,8 @@ jobs:
     steps:
       - name: Checkout git repo
         uses: actions/checkout@v3
+        with:
+          repository: goharbor/harbor
       - name: Build DB
         run: |
           make build -e BUILDTARGET="_build_redis"
