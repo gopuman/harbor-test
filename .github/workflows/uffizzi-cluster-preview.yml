@@ -4,7 +4,7 @@ name: Uffizzi Cluster Preview (deploy)
 on:
   workflow_run:
     workflows:
-      - 'Preview (build)'
+      - Preview (build)
     types:
       - completed
 
