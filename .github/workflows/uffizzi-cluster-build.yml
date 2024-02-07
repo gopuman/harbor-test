@@ -28,6 +28,8 @@ jobs:
     steps:
       - name: Checkout git repo
         uses: actions/checkout@v3
+        with:
+          repository: goharbor/harbor
       - name: Make versions dir
         run: |
           make compile
@@ -70,6 +72,8 @@ jobs:
     steps:
       - name: Checkout git repo
         uses: actions/checkout@v3
+        with:
+          repository: goharbor/harbor
       - name: Generate UUID image name
         id: uuid
         run: echo "UUID_PORTAL=$(uuidgen)" >> $GITHUB_ENV
@@ -109,6 +113,8 @@ jobs:
     steps:
       - name: Checkout git repo
         uses: actions/checkout@v3
+        with:
+          repository: goharbor/harbor
       - name: Make harbor_jobservice file
         run: |
           make compile
@@ -148,6 +154,8 @@ jobs:
     steps:
       - name: Checkout git repo
         uses: actions/checkout@v3
+        with:
+          repository: goharbor/harbor
       - name: Make registry file
         run: |
             make build -e BUILDTARGET="_build_registry"
@@ -187,6 +195,8 @@ jobs:
     steps:
       - name: Checkout git repo
         uses: actions/checkout@v3
+        with:
+          repository: goharbor/harbor
       - name: Make registry file
         run: |
             make build -e BUILDTARGET="_build_registry"
